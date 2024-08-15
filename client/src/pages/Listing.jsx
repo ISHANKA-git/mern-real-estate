@@ -42,7 +42,7 @@ export default function Listing() {
       )}
       {listing && !loading && !error && (
         <div>
-          <Swiper navigation>
+          <Swiper navigation> // Add navigation prop to enable navigation arrows
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
