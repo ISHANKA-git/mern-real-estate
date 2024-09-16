@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faTrashAlt, faEye, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   getDownloadURL,
   getStorage,
@@ -148,24 +150,39 @@ export default function Profile() {
     } catch (error) {
       console.log(error.message);
     }
-  };
+  }
   return (
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          type='file'
-          ref={fileRef}
-          hidden
-          accept='image/*'
-        />
+    <div className="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      
+  <div className="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    
+    
+    {/* Profile Header */}
+    <div className="relative">
+      <div className="absolute inset-0">
         <img
-          onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
-          alt='profile'
-          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
+          src="https://cdn11.bigcommerce.com/s-9cmhid8o4z/images/stencil/1280x1280/products/449/7658/bd-3x3m-7_2__15175.1637769728.jpg?c=1" 
+          alt="Cover"
+          className="w-full h-20 object-cover"
         />
+      </div>
+      <div className="relative flex flex-col items-center pt-8">
+        <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-md">
+          <img
+            onClick={() => fileRef.current.click()}
+            src={formData.avatar || currentUser.avatar}
+            alt="profile"
+            className="w-full h-full object-cover cursor-pointer"
+          />
+          
+          <input
+            onChange={(e) => setFile(e.target.files[0])}
+            type="file"
+            ref={fileRef}
+            hidden
+            accept="image/*"
+          />
+        </div>
         <p className='text-sm self-center'>
           {fileUploadError ? (
             <span className='text-red-700'>
@@ -179,97 +196,139 @@ export default function Profile() {
             ''
           )}
         </p>
-        <input
-          type='text'
-          placeholder='username'
-          defaultValue={currentUser.username}
-          id='username'
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type='email'
-          placeholder='email'
-          id='email'
-          defaultValue={currentUser.email}
-          className='border p-3 rounded-lg'
-          onChange={handleChange}
-        />
-        <input
-          type='password'
-          placeholder='password'
-          onChange={handleChange}
-          id='password'
-          className='border p-3 rounded-lg'
-        />
-        <button
-          disabled={loading}
-          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
-        >
-          {loading ? 'Loading...' : 'Update'}
-        </button>
-        <Link
-          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
-          to={'/create-listing'}
-        >
-          Create Listing
-        </Link>
+        <h1 className="text-xl font-semibold mt-2">{currentUser.username}</h1>
+        <p className="text-gray-500 text-sm mt-1">{currentUser.email}</p>
+      </div>
+    </div>
+
+    {/* Profile Form */}
+    <div className="p-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        
+        <div className="grid grid-cols-1 gap-4">
+          <input
+            type="text"
+            placeholder="Username"
+            defaultValue={currentUser.username}
+            id="username"
+            className="border border-gray-300 p-2 rounded-md w-full shadow-sm focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+            onChange={handleChange}
+          />
+          
+          
+          <input
+            type="email"
+            placeholder="Email"
+            id="email"
+            defaultValue={currentUser.email}
+            className="border border-gray-300 p-2 rounded-md w-full shadow-sm focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+            onChange={handleChange}
+          />
+          
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            className="border border-gray-300 p-2 rounded-md w-full shadow-sm focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-2">
+          <button
+            disabled={loading}
+            className="bg-blue-600 text-white py-2 rounded-md shadow-sm hover:bg-blue-700 transition-colors disabled:bg-gray-400 text-sm flex items-center justify-center"
+          >
+            {loading ? (
+              <span>Updating...</span>
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faPencilAlt} className="h-5 w-5 mr-2" />
+                <span>Update Profile</span>
+              </>
+            )}
+          </button>
+          <Link
+            className="bg-green-600 text-white py-2 rounded-md shadow-sm text-center hover:bg-green-700 transition-colors text-sm flex items-center justify-center"
+            to={'/create-listing'}
+          >
+            <FontAwesomeIcon icon={faPencilAlt} className="h-5 w-5 mr-2" />
+            <span>Create Listing</span>
+          </Link>
+        </div>
       </form>
-      <div className='flex justify-between mt-5'>
+    </div>
+
+    {/* Account Actions */}
+    <div className="p-4 border-t border-gray-200">
+      <div className="flex justify-between text-xs text-gray-600">
         <span
           onClick={handleDeleteUser}
-          className='text-red-700 cursor-pointer'
+          className="cursor-pointer hover:text-red-600 transition-colors flex items-center"
         >
-          Delete account
+          <FontAwesomeIcon icon={faTrashAlt} className="h-5 w-5 mr-1" />
+          Delete Account
         </span>
-        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
-          Sign out
+        <span
+          onClick={handleSignOut}
+          className="cursor-pointer hover:text-red-600 transition-colors flex items-center"
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 mr-1" />
+          Sign Out
         </span>
       </div>
-      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='text-green-700 mt-5'>
-        {updateSuccess ? 'User is updated successfully!' : ''}
-      </p>
-      <button onClick={handleShowListings} className='text-green-700 w-full'>
-        Show Listings
-      </button>
-      <p className='text-red-700 mt-5'>
-        {showListingsError ? 'Error showing listings' : ''}
-      </p>
+    </div>
 
+    {/* Feedback and Listings */}
+    <div className="p-4 border-t border-gray-200">
+      <p className="text-red-600 text-sm mb-2">{error}</p>
+      <p className="text-green-600 text-sm mb-2">{updateSuccess ? 'Profile updated successfully!' : ''}</p>
+      <button
+        onClick={handleShowListings}
+        className="text-blue-600 text-sm font-semibold hover:underline flex items-center"
+      >
+        <FontAwesomeIcon icon={faEye} className="h-5 w-5 mr-2" />
+        Show Your Listings
+      </button>
+      <p className="text-red-600 text-sm mt-2">{showListingsError}</p>
+      
+
+      {/* User Listings */}
       {userListings && userListings.length > 0 && (
-        <div className='flex flex-col gap-4'>
-          <h1 className='text-center mt-7 text-2xl font-semibold'>
-            Your Listings
-          </h1>
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold mb-2">Your Listings</h2>
           {userListings.map((listing) => (
             <div
               key={listing._id}
-              className='border rounded-lg p-3 flex justify-between items-center gap-4'
+              className="flex items-center justify-between bg-white border border-gray-300 rounded-md p-3 mb-2 shadow-sm transition-transform transform hover:scale-105"
             >
               <Link to={`/listing/${listing._id}`}>
                 <img
                   src={listing.imageUrls[0]}
-                  alt='listing cover'
-                  className='h-16 w-16 object-contain'
+                  alt="listing cover"
+                  className="h-14 w-14 object-cover rounded-md"
                 />
               </Link>
               <Link
-                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
+                className="flex-1 text-gray-700 text-sm font-semibold truncate hover:underline"
                 to={`/listing/${listing._id}`}
               >
-                <p>{listing.name}</p>
+                {listing.name}
               </Link>
-
-              <div className='flex flex-col item-center'>
+              <div className="flex gap-1">
                 <button
                   onClick={() => handleListingDelete(listing._id)}
-                  className='text-red-700 uppercase'
+                  className="text-red-600 text-xs font-semibold hover:underline flex items-center"
                 >
+                  <FontAwesomeIcon icon={faTrashAlt} className="h-4 w-4 mr-1" />
                   Delete
                 </button>
                 <Link to={`/update-listing/${listing._id}`}>
-                  <button className='text-green-700 uppercase'>Edit</button>
+                  <button className="text-blue-600 text-xs font-semibold hover:underline flex items-center">
+                    <FontAwesomeIcon icon={faPencilAlt} className="h-4 w-4 mr-1" />
+                    Edit
+                  </button>
                 </Link>
               </div>
             </div>
@@ -277,5 +336,11 @@ export default function Profile() {
         </div>
       )}
     </div>
+  </div>
+</div>
+
+
+
+
   );
 }

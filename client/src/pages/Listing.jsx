@@ -50,103 +50,119 @@ export default function Listing() {
   }, [params.listingId]);
   console.log(loading);
   return (
-    <main>
-      {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
-      {error && (
-        <p className='text-center my-7 text-2xl'>Something went wrong!</p>
-      )}
-      {listing && !loading && !error && (
-        <div>
-          <Swiper navigation>
-            {listing.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
-                <div
-                  className='h-[550px]'
-                  style={{
-                    background: `url(${url}) center no-repeat`,
-                    backgroundSize: 'cover',
-                  }}
-                ></div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
-            <FaShare
-              className='text-slate-500'
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 2000);
-              }}
-            />
-          </div>
-          {copied && (
-            <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
-              Link copied!
-            </p>
-          )}
-          <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
-            <p className='text-2xl font-semibold'>
-              {listing.name} - ${' '}
-              {listing.offer
-                ? listing.discountPrice.toLocaleString('en-US')
-                : listing.regularPrice.toLocaleString('en-US')}
-              {listing.type === 'rent' && ' / month'}
-            </p>
-            <p className='flex items-center mt-6 gap-2 text-slate-600  text-sm'>
-              <FaMapMarkerAlt className='text-green-700' />
-              {listing.address}
-            </p>
-            <div className='flex gap-4'>
-              <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
-              </p>
-              {listing.offer && (
-                <p className='bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                  ${+listing.regularPrice - +listing.discountPrice} OFF
-                </p>
-              )}
-            </div>
-            <p className='text-slate-800'>
-              <span className='font-semibold text-black'>Description - </span>
-              {listing.description}
-            </p>
-            <ul className='text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6'>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaBed className='text-lg' />
-                {listing.bedrooms > 1
-                  ? `${listing.bedrooms} beds `
-                  : `${listing.bedrooms} bed `}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaBath className='text-lg' />
-                {listing.bathrooms > 1
-                  ? `${listing.bathrooms} baths `
-                  : `${listing.bathrooms} bath `}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaParking className='text-lg' />
-                {listing.parking ? 'Parking spot' : 'No Parking'}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaChair className='text-lg' />
-                {listing.furnished ? 'Furnished' : 'Unfurnished'}
-              </li>
-            </ul>
-            {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button
-              onClick={() => setContact(true)}
-              className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'
-            >
-                Contact landlord
-              </button>
-            )}
-            {contact && <Contact listing={listing}/>}
-          </div>
+    <main className="relative min-h-screen bg-gray-50">
+  {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
+  {error && (
+    <p className="text-center my-7 text-2xl text-red-600">Something went wrong!</p>
+  )}
+  {listing && !loading && !error && (
+    <div className="max-w-6xl mx-auto p-4">
+      {/* Swiper for Listing Images */}
+      <div className="relative w-full overflow-hidden rounded-lg shadow-lg">
+        <Swiper navigation loop>
+          {listing.imageUrls.map((url) => (
+            <SwiperSlide key={url}>
+              <div
+                className="h-[550px] w-full"
+                style={{
+                  background: `url(${url}) center no-repeat`,
+                  backgroundSize: 'cover',
+                }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* Share Button */}
+        <div className="absolute top-4 right-4 z-10 p-3 bg-white shadow-md rounded-full cursor-pointer hover:bg-gray-100 transition-all">
+          <FaShare
+            className="text-gray-600"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }}
+          />
         </div>
-      )}
-    </main>
+        {copied && (
+          <p className="absolute top-14 right-4 z-10 bg-green-100 text-green-800 px-3 py-1 rounded-lg">
+            Link copied!
+          </p>
+        )}
+      </div>
+
+      {/* Listing Info Section */}
+      <div className="bg-white p-6 mt-6 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-semibold text-gray-800 mb-4">
+          {listing.name} - ${' '}
+          {listing.offer
+            ? listing.discountPrice.toLocaleString('en-US')
+            : listing.regularPrice.toLocaleString('en-US')}
+          {listing.type === 'rent' && ' / month'}
+        </h1>
+
+        <p className="flex items-center text-gray-500 mb-4">
+          <FaMapMarkerAlt className="text-green-500 mr-2" />
+          {listing.address}
+        </p>
+
+        {/* Badges for Sale/Rent and Offer */}
+        <div className="flex gap-4 mb-4">
+          <span className={`px-3 py-1 text-sm font-semibold rounded-full ${listing.type === 'rent' ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'}`}>
+            {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+          </span>
+          {listing.offer && (
+            <span className="px-3 py-1 text-sm font-semibold bg-green-500 text-white rounded-full">
+              ${+listing.regularPrice - +listing.discountPrice} OFF
+            </span>
+          )}
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-700 mb-6">
+          <span className="font-semibold text-gray-900">Description: </span>
+          {listing.description}
+        </p>
+
+        {/* Features List */}
+        <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-gray-600 text-sm font-semibold">
+          <li className="flex items-center gap-2">
+            <FaBed className="text-lg text-blue-500" />
+            {listing.bedrooms > 1
+              ? `${listing.bedrooms} Beds`
+              : `${listing.bedrooms} Bed`}
+          </li>
+          <li className="flex items-center gap-2">
+            <FaBath className="text-lg text-blue-500" />
+            {listing.bathrooms > 1
+              ? `${listing.bathrooms} Baths`
+              : `${listing.bathrooms} Bath`}
+          </li>
+          <li className="flex items-center gap-2">
+            <FaParking className="text-lg text-blue-500" />
+            {listing.parking ? 'Parking Spot' : 'No Parking'}
+          </li>
+          <li className="flex items-center gap-2">
+            <FaChair className="text-lg text-blue-500" />
+            {listing.furnished ? 'Furnished' : 'Unfurnished'}
+          </li>
+        </ul>
+
+        {/* Contact Landlord Button */}
+        {currentUser && listing.userRef !== currentUser._id && !contact && (
+          <button
+            onClick={() => setContact(true)}
+            className="mt-6 w-full p-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition-all"
+          >
+            Contact Landlord
+          </button>
+        )}
+
+        {contact && <Contact listing={listing} />}
+      </div>
+    </div>
+  )}
+</main>
+
   );
 }
