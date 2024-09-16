@@ -94,7 +94,7 @@ export default function SignIn() {
     <div className="md:block hidden w-1/2">
       <img
         className="rounded-2xl"
-        src="src/assets/images/1.png"
+        src="https://github.com/ISHANKA-git/mern-real-estate/blob/main/client/src/assets/images/1.png?raw=true"
         alt="Login illustration"
       />
     </div>
