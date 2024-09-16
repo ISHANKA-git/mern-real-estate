@@ -39,9 +39,9 @@ export default function About() {
         {/* Right Column - Image */}
         <div className="flex justify-center lg:justify-end">
           <img
-            src="src/assets/images/1.png"
+            src="https://st2.depositphotos.com/1637787/6885/i/450/depositphotos_68857205-stock-photo-couple-holding-a-minature-house.jpg"
             alt="Real Estate Journey"
-            className="w-80 h-auto object-cover rounded-lg shadow-lg"
+            className="w-85 h-auto object-cover rounded-lg shadow-lg"
           />
         </div>
       </div>

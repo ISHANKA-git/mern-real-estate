@@ -102,7 +102,7 @@ export default function SignUp() {
     <div className="md:block hidden w-1/2">
       <img
         className="rounded-2xl"
-        src="src/assets/images/1.png"
+        src="https://vivintique.com/wp-content/uploads/2023/11/Rectangle-634-215.webp"
         alt="Signup illustration"
       />
     </div>
